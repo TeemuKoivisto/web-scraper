@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Scraper</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    </head>
+    <body ng-app="ScraperApp">
+        <header>
+            <nav ng-controller="NavbarController" class="navbar navbar-default navbar-static-top">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="#/">Index</a></li>
+                    <li><a ng-href="#/scrape">Scrape</a></li>
+					<li><a ng-href="#/profile">Profile</a></li>
+					<li><a ng-href="/scrap">Scraped</a></li>
+					<ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
+						<li><a href="/#/login">Login</a></li>
+					</ul>
+					<ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+						<li><a ng-href="#/logout">Logout</a></li>
+					</ul>
+                </ul>
+            </nav>
+        </header>
+        <div ng-view="main-container">
+        </div>
+        
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.min.js"></script>
+        
+		<script src="//cdn.jsdelivr.net/satellizer/0.13.0/satellizer.min.js"></script>
+		
+        <script src="all.js"></script>
+    </body>
+</html>

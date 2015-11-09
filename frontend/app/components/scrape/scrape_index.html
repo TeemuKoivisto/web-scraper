@@ -1,0 +1,22 @@
+<section class="col-md-8" id="scrape-feed" style='float: left;'>
+	<div data-ng-repeat="link in scrape.scraped">
+		<h3>
+			<a data-ng-href="{{ link.url }}">
+				{{ link.title }}
+			</a>
+		</h3>
+	</div>
+</section>
+<section class="col-md-4" style='float: left;'>
+	<!-- <form class="form-inline" role="form"> -->
+		<div class="form-group">
+			<label for="site">Site</label>
+			<input ng-model="scrape.site" class="form-control">
+		</div>
+		<div class="form-group">
+			<label for="options">Scrape options</label>
+			<input class="form-control">
+		</div>
+		<button ng-click="scrape.scrape()" class="btn btn-default">Submit</button>
+	<!-- </form> -->
+</section>
