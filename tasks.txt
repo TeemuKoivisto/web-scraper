@@ -1,0 +1,37 @@
+create gulp-script to start node-server
+
+set gulp to refresh page on changes
+
+create scrape-method for scraper service
+* uses $http (or $resource?)
+* update the route in the backend
+
+create profile-view
+* profile_index.html
+* profile.controller
+* profile-model consists of name, id and email
+
+enable authentication with json-webtoken
+
+split all gulp-scripts into different files
+
+add $templateCache
+
+create login-view
+
+add authentication on frontend
+
+allow customized scrape-method calls
+* takes two parameters: url and options
+* options describe how the page indicated by the url is scraped
+* user can i.e. scrape all the h2-elements text inside a-element into json-object
+
+add form to scrape-view for customized scrape
+
+set scrape-view to require authentication
+
+lol tests
+
+make git repo
+
+add docker
