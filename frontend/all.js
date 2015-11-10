@@ -77,27 +77,6 @@
 	}
 })();
 (function() {
-	'use strict';
-
-	angular
-	.module('ScraperApp')
-	.controller('LoginController', LoginController);
-
-	function LoginController($scope, $location, $auth) {
-		var vm = this;
-		$scope.authenticate = function(provider) {
-			$auth.authenticate(provider)
-				.then(function() {
-					console.log('You have successfully signed in with ' + provider);
-					$location.path('/');
-				})
-				.catch(function(response) {
-					console.log(response.data.message);
-				});
-		};
-	}
-})();
-(function() {
 	
 	angular
 	.module('ScraperApp')
@@ -133,6 +112,27 @@
 	}
 })();
 (function() {
+	'use strict';
+
+	angular
+	.module('ScraperApp')
+	.controller('LoginController', LoginController);
+
+	function LoginController($scope, $location, $auth) {
+		var vm = this;
+		$scope.authenticate = function(provider) {
+			$auth.authenticate(provider)
+				.then(function() {
+					console.log('You have successfully signed in with ' + provider);
+					$location.path('/');
+				})
+				.catch(function(response) {
+					console.log(response.data.message);
+				});
+		};
+	}
+})();
+(function() {
 	
 	angular
 	.module('ScraperApp')
@@ -151,18 +151,9 @@
 	.module('ScraperApp')
 	.controller('ProfileController', ProfileController);
 
-	function ProfileController(AccountFactory) {
+	function ProfileController(AccountFactory, $auth) {
 		var vm = this;
-		vm.user = {
-			facebook: {
-				id: '',
-				token: ''
-			},
-			google: {
-				id: '',
-				token: ''
-			}
-		}
+		vm.user = {};
 		vm.getProfile = function() {
 			AccountFactory.getProfile()
 				.then(function(response) {
@@ -174,37 +165,28 @@
 					// toastr.error(response.data.message, response.status);
 				});
 		};
-		/*
-		vm.updateProfile = function() {
-		  Account.updateProfile(vm.user)
-			.then(function() {
-			  toastr.success('Profile has been updated');
-			})
-			.catch(function(response) {
-			  toastr.error(response.data.message, response.status);
-			});
-		};
+		
 		vm.link = function(provider) {
 		  $auth.link(provider)
 			.then(function() {
-			  toastr.success('You have successfully linked a ' + provider + ' account');
+			  console.log('You have successfully linked a ' + provider + ' account');
 			  vm.getProfile();
 			})
 			.catch(function(response) {
-			  toastr.error(response.data.message, response.status);
+			  console.log(response.data.message, response.status);
 			});
 		};
 		vm.unlink = function(provider) {
 		  $auth.unlink(provider)
 			.then(function() {
-			  toastr.info('You have unlinked a ' + provider + ' account');
+			  console.log('You have unlinked a ' + provider + ' account');
 			  vm.getProfile();
 			})
 			.catch(function(response) {
-			  toastr.error(response.data ? response.data.message : 'Could not unlink ' + provider + ' account', response.status);
+			  console.log(response.data ? response.data.message : 'Could not unlink ' + provider + ' account', response.status);
 			});
 		};
-		*/
+		
 		vm.getProfile();
 	}
 })();
@@ -218,12 +200,16 @@
 	function ScrapeController(ScraperService) {
 		var vm = this;
 		vm.scraped = ScraperService.scrape('iltasanomat', 'asdf');
+		vm.urls = vm.scraped.length;
+		vm.titles = vm.scraped.length;
 		vm.site = '';
 		vm.options = '';
 		vm.scrape = function() {
 			ScraperService.scrape2(vm.site, vm.options).then(function(response) {
-				// console.log('response on ' + response);
+				// console.log('response on ', response);
 				vm.scraped = response.links;
+				vm.urls = response.urls;
+				vm.titles = response.titles;
 			})
 		};
 	}
@@ -238,7 +224,7 @@
 	function ScraperService($http) {
 		this.scraped = [
 			{
-				title: 'aasdfggggggggdddddddddddddddddddddddddddGGGGGGGGGG',
+				title: 'aasag',
 				url: 'www.lol.fi'
 			},
 			{

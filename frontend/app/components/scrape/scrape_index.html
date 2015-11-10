@@ -1,4 +1,6 @@
 <section class="col-md-8" id="scrape-feed" style='float: left;'>
+	<span>Linkkejä: {{ scrape.urls }}</span>
+	<span>Otsikkoja: {{ scrape.titles }}</span>
 	<div data-ng-repeat="link in scrape.scraped">
 		<h3>
 			<a data-ng-href="{{ link.url }}">

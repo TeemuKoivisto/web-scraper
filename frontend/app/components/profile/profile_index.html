@@ -10,48 +10,43 @@
 
                 <p>
                     <strong>id</strong>: {{ profile.user.facebook.id }}<br>
-                    <strong>token</strong>: {{ profile.user.facebook.token }}<br>
                     <strong>email</strong>: {{ profile.user.facebook.email }}<br>
-                    <strong>name</strong>: {{ profile.user.facebook.name }}
+                    <strong>name</strong>: {{ profile.user.facebook.displayName }}
                 </p>
 
             </div>
         </div>
-
         <div class="col-sm-6">
             <div class="well">
                 <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google</h3>
 
                 <p>
                     <strong>id</strong>: {{ profile.user.google.id }}<br>
-                    <strong>token</strong>: {{ profile.user.google.token }}<br>
                     <strong>email</strong>: {{ profile.user.google.email }}<br>
-                    <strong>name</strong>: {{ profile.user.google.name }}
+                    <strong>name</strong>: {{ profile.user.google.displayName }}
                 </p>
 
             </div>
         </div>
 	</div>
-	
-  <div class="panel panel-default">
-   <div class="panel-heading">Accounts</div>
-    <div class="panel-body">
-      <legend><i class="ion-link"></i> Linked Accounts</legend>
-      <div class="btn-group-vertical">
-        <button class="btn btn-sm btn-danger" ng-if="user.facebook" ng-click="unlink('facebook')">
-          <i class="ion-social-facebook"></i> Unlink Facebook Account
-        </button>
-        <button class="btn btn-sm btn-primary" ng-if="!user.facebook" ng-click="link('facebook')">
-          <i class="ion-social-facebook"></i> Link Facebook Account
-        </button>
+	<div class="text-center">
+		<div class="panel-body">
+		  <legend><i class="ion-link"></i> Linked Accounts</legend>
+		  <div class="btn-group-vertical">
+			<button class="btn btn-sm btn-danger" ng-if="profile.user.facebook.id" ng-click="profile.unlink('facebook')">
+			  <i class="ion-social-facebook"></i> Unlink Facebook Account
+			</button>
+			<button class="btn btn-sm btn-primary" ng-if="!profile.user.facebook.id" ng-click="profile.link('facebook')">
+			  <i class="ion-social-facebook"></i> Link Facebook Account
+			</button>
 
-        <button class="btn btn-sm btn-danger" ng-if="user.google" ng-click="unlink('google')">
-          <i class="ion-social-googleplus"></i> Unlink Google Account
-        </button>
-        <button class="btn btn-sm btn-primary" ng-if="!user.google" ng-click="link('google')">
-          <i class="ion-social-googleplus"></i> Link Google Account
-        </button>
-      </div>
-    </div>
-  </div>
+			<button class="btn btn-sm btn-danger" ng-if="profile.user.google.id" ng-click="profile.unlink('google')">
+			  <i class="ion-social-googleplus"></i> Unlink Google Account
+			</button>
+			<button class="btn btn-sm btn-primary" ng-if="!profile.user.google.id" ng-click="profile.link('google')">
+			  <i class="ion-social-googleplus"></i> Link Google Account
+			</button>
+		  </div>
+		</div>
+	</div>
 </div>

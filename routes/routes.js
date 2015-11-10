@@ -17,6 +17,7 @@ module.exports = function(app) {
 	app.get('/api/me', auth.ensureAuthenticated, profileRoutes.getProfile);
 	app.put('/api/me', auth.ensureAuthenticated, profileRoutes.putProfile);
 	
+	app.post('/auth/unlink', auth.ensureAuthenticated, authRoutes.unLink);
 	app.post('/auth/google', authRoutes.googleAuth);
 	app.post('/auth/facebook', authRoutes.facebookAuth);
 	

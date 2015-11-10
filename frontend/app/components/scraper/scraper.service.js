@@ -8,7 +8,7 @@
 	function ScraperService($http) {
 		this.scraped = [
 			{
-				title: 'aasdfggggggggdddddddddddddddddddddddddddGGGGGGGGGG',
+				title: 'aasag',
 				url: 'www.lol.fi'
 			},
 			{

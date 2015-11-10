@@ -6,6 +6,40 @@ var auth = require('../config/authMethods');
 
 var User = require('../models/user');
 
+module.exports.unLink = function(req, res) {
+  var provider = req.body.provider;
+  var providers = ['facebook', 'google'];
+
+  if (providers.indexOf(provider) === -1) {
+    return res.status(400).send({ message: 'Unknown OAuth Provider' });
+  }
+
+  User.findById(req.user, function(err, user) {
+    if (!user) {
+      return res.status(400).send({ message: 'User Not Found' });
+    }
+	 
+	var count = 0;
+	var object = user.toObject();
+	// console.log('user on', object);
+	for(var key in object) {
+		console.log(key);
+		if (providers.indexOf(key)!==-1) {
+			count++;
+		}
+	}
+	 // console.log('providers on', count);
+	if (count===1) {
+		res.status(405).send({ message: 'Cant unlink the last provider' });
+	} else {
+		user[provider] = undefined;
+		user.save(function() {
+		  res.status(200).end();
+		});
+	}
+  });
+};
+
 module.exports.googleAuth = function(req, res){
   var accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
   var peopleApiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect';
@@ -30,7 +64,7 @@ module.exports.googleAuth = function(req, res){
 	  console.log('profile on ', profile);
       // Step 3a. Link user accounts.
       if (req.headers.authorization) {
-        User.findOne({ google: profile.sub }, function(err, existingUser) {
+        User.findOne({ 'google.id': profile.sub }, function(err, existingUser) {
           if (existingUser) {
             return res.status(409).send({ message: 'There is already a Google account that belongs to you' });
           }
@@ -40,9 +74,9 @@ module.exports.googleAuth = function(req, res){
             if (!user) {
               return res.status(400).send({ message: 'User not found' });
             }
-            user.google = profile.sub;
-            user.picture = user.picture || profile.picture.replace('sz=50', 'sz=200');
-            user.displayName = user.displayName || profile.name;
+            user.google.id = profile.sub;
+            user.google.picture = user.picture || profile.picture.replace('sz=50', 'sz=200');
+            user.google.displayName = user.displayName || profile.name;
             user.save(function() {
               var token = auth.createJWT(user);
               res.send({ token: token });
@@ -52,14 +86,15 @@ module.exports.googleAuth = function(req, res){
       } else {
 		  console.log('hei');
         // Step 3b. Create a new user account or return an existing one.
-        User.findOne({ google: profile.sub }, function(err, existingUser) {
+        User.findOne({ 'google.id': profile.sub }, function(err, existingUser) {
           if (existingUser) {
             return res.send({ token: auth.createJWT(existingUser) });
           }
           var user = new User();
-          user.google = profile.sub;
-          user.picture = profile.picture.replace('sz=50', 'sz=200');
-          user.displayName = profile.name;
+		  user.primary = 'google';
+          user.google.id = profile.sub;
+          user.google.picture = profile.picture.replace('sz=50', 'sz=200');
+          user.google.displayName = profile.name;
           user.save(function(err) {
             var token = auth.createJWT(user);
             res.send({ token: token });
@@ -94,7 +129,8 @@ module.exports.facebookAuth = function(req, res){
       }
       console.log(profile);
       if (req.headers.authorization) {
-        User.findOne({ facebook: profile.id }, function(err, existingUser) {
+		  console.log('luon linkin facebook accounttiin');
+        User.findOne({ 'facebook.id': profile.id }, function(err, existingUser) {
           if (existingUser) {
             return res.status(409).send({ message: 'There is already a Facebook account that belongs to you' });
           }
@@ -104,9 +140,9 @@ module.exports.facebookAuth = function(req, res){
             if (!user) {
               return res.status(400).send({ message: 'User not found' });
             }
-            user.facebook = profile.id;
-            user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
-            user.displayName = user.displayName || profile.name;
+            user.facebook.id = profile.id;
+            user.facebook.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
+            user.facebook.displayName = user.displayName || profile.name;
             user.save(function() {
               var token = auth.createJWT(user);
               res.send({ token: token });
@@ -115,16 +151,18 @@ module.exports.facebookAuth = function(req, res){
         });
       } else {
         // Step 3b. Create a new user account or return an existing one.
-        User.findOne({ facebook: profile.id }, function(err, existingUser) {
+        User.findOne({ 'facebook.id': profile.id }, function(err, existingUser) {
           if (existingUser) {
             var token = auth.createJWT(existingUser);
             return res.send({ token: token });
           }
           var user = new User();
-          user.facebook = profile.id;
-          user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
-          user.displayName = profile.name;
-          user.save(function() {
+          user.primary = 'facebook';
+          user.facebook.id = profile.id;
+          user.facebook.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+          user.facebook.displayName = profile.name;
+          user.save(function(err) {
+			if (err) console.log(err);
             var token = auth.createJWT(user);
             res.send({ token: token });
           });

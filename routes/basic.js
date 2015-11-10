@@ -3,6 +3,33 @@ var request = require('request');
 var cheerio = require('cheerio');
 var iconv = require('iconv-lite');
 
+function checkCharsetAndEncode(html) {
+	console.log('html on', html);
+	var uusi = iconv.decode(html, "utf-8");
+	var $ = cheerio.load(uusi);
+	
+	$('meta').filter(function() {
+		var data = $(this);
+		 // console.log('', data);
+		if (typeof data['0'].attribs !== 'undefined' && data['0'].attribs.content.indexOf('charset')!==-1) {
+			console.log('charset löytyi', data['0'].attribs.content);
+			if (data['0'].attribs.content.indexOf('utf-8')!==-1) {
+				console.log('palauta utf8');
+				return uusi;
+			} else if (data['0'].attribs.content.indexOf('ISO-8859-1')!==-1) {
+				console.log('palauta iso', html);
+				var iso = iconv.decode(html, "ISO-8859-1");
+				// console.log('iso on', iso);
+				return iso;
+			} else {
+				console.log('wtf was encoding? ', data.attrib.content);
+				throw('fug');
+			}
+		}
+	})
+	return uusi;
+}
+
 module.exports.basicScrape = function(req, res){
 	if (!req.body.url) {
 		res.send('no url you fool');
@@ -56,7 +83,14 @@ module.exports.pageScrape = function(req, res){
 			titles: 0
 		}
 		if(!error){
-			html = iconv.decode(html, "ISO-8859-1");
+			console.log('headers', response.headers);
+			if (response.headers['content-type'] === 'text/html; charset=utf-8' || response.headers['content-type'] === 'text/html; charset=UTF-8' || response.headers['content-type'] === 'text/html') {
+				html = iconv.decode(html, "utf-8");
+			} else if (response.headers['content-type'] === 'text/html; charset=ISO-8859-1') {
+				html = iconv.decode(html, "ISO-8859-1");
+			} else {
+				throw('unknown encoding', response.headers['content-type']);
+			}
 			var $ = cheerio.load(html);
 			
 			$('a').filter(function(){
