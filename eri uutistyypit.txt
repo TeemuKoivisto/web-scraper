@@ -1,0 +1,24 @@
+is
+http://www.iltasanomat.fi/yleisurheilu/art-1447149070932.html
+http://www.iltasanomat.fi/ <tyyppi> /art- <id>.html
+
+il
+http://www.iltalehti.fi/fitnessvoimailu/2015111020641787_bs.shtml
+http://www.iltalehti.fi/ <tyyppi> <id> 
+
+hs
+http://www.hs.fi/talous/a1447137201226
+http://www.hs.fi/ <tyyppi> <id>
+
+yle
+http://yle.fi/uutiset/analyysi_ruotsin_asenne_pakolaisiin_kaantyi_kolmessa_kuukaudessa/8445882
+http://yle.fi/uutiset/ ? <otsikko> <id>
+
+mtv3
+http://www.mtv.fi/uutiset/kotimaa/artikkeli/poliisi-kay-joka-paiva-hennalan-hatamajoitusyksikolla-johtaja-tyrmaa-vaitteet-levottomuuksista/5552074
+http://www.mtv.fi/uutiset/? <tyyppi> <uutistyyppi> <otsikko> <id>
+
+ts
+http://www.taloussanomat.fi/ihmiset/2015/11/10/tassa-ovat-slushin-kovimmat-katso-tarppilista/201514785/137
+http://www.taloussanomat.fi/ <tyyppi> <vuosi> <kuukausi> <paiva> <otsikko> <id> <joku>
+

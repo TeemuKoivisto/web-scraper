@@ -9,13 +9,13 @@ app.use(logger('dev'));
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false})); // w
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/frontend'));
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://omistaja:asdf@ds045704.mongolab.com:45704/nh-test');
 mongoose.connection.on('error', function(err) {
-	console.log('Error: Could not connect to MongoDB. Did you forget to run `mongod`?'.red);
+	console.log('Error: Could not connect to MongoDB.'.red);
 });
 
 require('./routes/routes.js')(app);
